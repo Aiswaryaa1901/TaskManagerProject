@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { supabase, supabaseAdmin } = require('../config/supabase');
 
-// 1. SIGN UP ROUTE (With Admin Auto-Confirm Guard)
+// 1. SIGN UP ROUTE (Complete Cloud Restriction Bypass)
 router.post('/signup', async (req, res) => {
   const { email, password } = req.body;
 
@@ -12,21 +12,32 @@ router.post('/signup', async (req, res) => {
 
   try {
     if (!supabaseAdmin) {
-      throw new Error('Missing Supabase service role key for user creation.');
+      throw new Error('Missing Supabase Service Role Key to bypass cloud restrictions.');
     }
 
-    // Uses Admin powers to create the user so they are instantly confirmed
+    // This forces Supabase to create the user via backend root admin power,
+    // completely ignoring the "Allow Self Signup" dashboard restrictions.
     const { data, error } = await supabaseAdmin.auth.admin.createUser({
-      email,
-      password,
-      email_confirm: true,
+      email: email,
+      password: password,
+      email_confirm: true // Instantly sets status to confirmed
     });
 
-    if (error) throw error;
+    if (error) {
+      // If the error is that the user already exists, let's pass a clean message
+      if (error.message.includes('already registered') || error.status === 422) {
+        return res.status(400).json({ error: 'This email address is already registered.' });
+      }
+      throw error;
+    }
 
-    res.status(201).json({ message: 'User registered and auto-confirmed successfully!', data });
+    res.status(201).json({ 
+      message: 'User registered and auto-confirmed via admin bypass!', 
+      data: data.user 
+    });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    console.error("Signup error:", err.message);
+    res.status(400).json({ error: err.message || 'Registration bypass sequence failed.' });
   }
 });
 
@@ -38,53 +49,22 @@ router.post('/login', async (req, res) => {
     return res.status(400).json({ error: 'Email and password are required' });
   }
 
-  const signIn = async () => {
-    return await supabase.auth.signInWithPassword({
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
-  };
-
-  const confirmEmailForUser = async () => {
-    if (!supabaseAdmin) {
-      throw new Error('Missing Supabase service role key; cannot auto-confirm email.');
-    }
-
-    const { data, error } = await supabaseAdmin.auth.admin.listUsers({ perPage: 100 });
-    if (error) throw error;
-
-    const user = data?.users?.find((u) => u.email === email);
-    if (!user) return null;
-
-    const { data: updatedUser, error: updateError } = await supabaseAdmin.auth.admin.updateUserById(user.id, {
-      email_confirm: true,
-    });
-    if (updateError) throw updateError;
-    return updatedUser?.user ?? user;
-  };
-
-  try {
-    let { data, error } = await signIn();
-
-    if (error && error.message?.toLowerCase().includes('email not confirmed')) {
-      try {
-        await confirmEmailForUser();
-        const retry = await signIn();
-        data = retry.data;
-        error = retry.error;
-      } catch (confirmError) {
-        return res.status(500).json({
-          error: confirmError.message || 'Email confirmation failed due to invalid admin permissions.',
-        });
-      }
-    }
 
     if (error) {
+      // Custom clean messaging for exact credentials check
+      if (error.message.includes('Invalid login credentials')) {
+        return res.status(401).json({ error: 'Incorrect email or password. Please try again.' });
+      }
       return res.status(401).json({ error: error.message });
     }
 
     if (!data?.session || !data?.user) {
-      return res.status(401).json({ error: 'Invalid login credentials' });
+      return res.status(401).json({ error: 'Invalid login credentials state.' });
     }
 
     res.status(200).json({
@@ -105,6 +85,23 @@ router.post('/logout', async (req, res) => {
     res.status(200).json({ message: 'Logged out successfully!' });
   } catch (err) {
     res.status(400).json({ error: err.message });
+  }
+});
+
+// 4. GOOGLE OAUTH REDIRECT ROUTE
+router.get('/google', async (req, res) => {
+  try {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: 'http://localhost:5173/dashboard',
+      },
+    });
+
+    if (error) throw error;
+    res.redirect(data.url);
+  } catch (err) {
+    res.status(500).json({ error: err.message || 'Failed to initialize Google OAuth sequence.' });
   }
 });
 

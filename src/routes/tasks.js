@@ -111,4 +111,31 @@ router.get('/analytics', async (req, res) => {
   }
 });
 
+// 4. UPDATE AN EXISTING TASK'S STATUS OR OTHER DETAILS
+router.put('/:id', async (req, res) => {
+  const taskId = req.params.id;
+  const userId = req.user.id;
+  const { title, description, priority, status, due_date } = req.body;
+
+  try {
+    // We update the task, but ensure it strictly belongs to the logged-in user for security!
+    const { data, error } = await supabase
+      .from('tasks')
+      .update({ title, description, priority, status, due_date })
+      .eq('id', taskId)
+      .eq('user_id', userId)
+      .select();
+
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+      return res.status(404).json({ error: "Task not found or unauthorized access." });
+    }
+
+    res.status(200).json({ message: "Task updated successfully!", updatedTask: data[0] });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 module.exports = router;
