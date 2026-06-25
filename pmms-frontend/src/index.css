@@ -1,0 +1,94 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  background-color: #f3f4f6;
+  color: #1f2937;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+/* Layout Blueprint */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+/* Sleek Dark Sidebar */
+.sidebar {
+  width: 260px;
+  background-color: #111827;
+  color: #ffffff;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #1f2937;
+}
+
+.sidebar .logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: #3b82f6;
+  letter-spacing: 0.5px;
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-menu a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #9ca3af;
+  text-decoration: none;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.nav-menu a.active, .nav-menu a:hover {
+  background-color: #1f2937;
+  color: #3b82f6;
+}
+
+/* Dashboard View Wrapper */
+.main-content {
+  flex: 1;
+  background-color: #f9fafb;
+  overflow-y: auto;
+}
+
+.logout-btn {
+  background: none;
+  border: 1px solid #334155;
+  color: #9ca3af;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-align: left;
+  cursor: pointer;
+  margin-top: auto; /* Pushes the exit button smoothly to the bottom */
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #ef44441a;
+  color: #f87171;
+  border-color: #f8717140;
+}
