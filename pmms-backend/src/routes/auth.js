@@ -24,20 +24,37 @@ router.post('/signup', async (req, res) => {
     });
 
     if (error) {
-      // If the error is that the user already exists, let's pass a clean message
-      if (error.message.includes('already registered') || error.status === 422) {
-        return res.status(400).json({ error: 'This email address is already registered.' });
+      const payload = {
+        error: error.message || 'Registration failed',
+        status: error.status || 400,
+        code: error.code || null,
+      };
+
+      if (error.message.includes('already registered') || error.status === 422 || error.code === 'email_exists') {
+        return res.status(400).json({
+          error: 'This email address is already registered.',
+          status: 422,
+          code: error.code || 'email_exists',
+        });
       }
-      throw error;
+
+      console.error('Signup error payload:', payload);
+      return res.status(payload.status).json(payload);
     }
 
-    res.status(201).json({ 
-      message: 'User registered and auto-confirmed via admin bypass!', 
-      data: data.user 
+    res.status(201).json({
+      message: 'User registered and auto-confirmed via admin bypass!',
+      data: data.user,
     });
   } catch (err) {
-    console.error("Signup error:", err.message);
-    res.status(400).json({ error: err.message || 'Registration bypass sequence failed.' });
+    console.error('Signup error raw:', err);
+
+    const status = err?.status || 400;
+    res.status(status).json({
+      error: err?.message || 'Registration bypass sequence failed.',
+      status,
+      code: err?.code || 'signup_failed',
+    });
   }
 });
 

@@ -30,9 +30,9 @@ function Login() {
       const data = await response.json();
 
       if (!response.ok) {
-        // Fallback hierarchy to extract the exact backend string
         const serverErrorMessage = data.error || data.message || 'Authentication session halted.';
-        throw new Error(serverErrorMessage);
+        const serverErrorCode = data.code ? ` [${data.code}${data.status ? `, ${data.status}` : ''}]` : '';
+        throw new Error(`${serverErrorMessage}${serverErrorCode}`);
       }
 
       if (isRegistering) {
