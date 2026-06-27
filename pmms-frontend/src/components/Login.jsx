@@ -59,7 +59,7 @@ function Login() {
     <div className="login-container">
       <div className="login-glass-card">
         <div className="login-header">
-          <h2>PMMS Engine</h2>
+          <h2>TASK MANAGER </h2>
           <p>{isRegistering ? 'Compile new user credentials' : 'Initialize secure system session'}</p>
         </div>
 
@@ -95,12 +95,7 @@ function Login() {
 
         <div className="divider"><span>or</span></div>
 
-        <button type="button" onClick={handleGoogleLogin} className="google-btn">
-          <svg viewBox="0 0 24 24" width="18" height="18">
-            <path fill="#EA4335" d="M12.24 10.285V14.4h6.887c-.275 1.565-1.88 4.604-6.887 4.604-4.33 0-7.866-3.577-7.866-8s3.536-8 7.866-8c2.46 0 4.105 1.025 5.047 1.926l3.227-3.11C18.28 1.845 15.448 1 12.24 1 6.033 1 1 6.033 1 12.24s5.033 11.24 11.24 11.24c6.478 0 10.793-4.537 10.793-10.986 0-.746-.08-1.32-.176-1.714H12.24z"/>
-          </svg>
-          Continue with Google
-        </button>
+        
 
         <p className="toggle-auth-text">
           {isRegistering ? 'Already authenticated?' : 'New system operator?'}{' '}

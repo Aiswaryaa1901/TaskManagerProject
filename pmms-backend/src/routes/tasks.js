@@ -138,4 +138,51 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+// 5. DELETE A TASK STRICTLY OWNED BY THE AUTHENTICATED USER
+router.delete('/:id', async (req, res) => {
+  const taskId = req.params.id;
+  const userId = req.user.id;
+
+  try {
+    const { data, error } = await supabase
+      .from('tasks')
+      .delete()
+      .eq('id', taskId)
+      .eq('user_id', userId)
+      .select();
+
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+      return res.status(404).json({ error: "Task not found or unauthorized access." });
+    }
+
+    res.status(200).json({ message: "Task deleted successfully!" });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// ⚠️ TEMPORARY DEVELOPER TESTING ENDPOINT: WIPE BAD/OLD SCHEMA ENTRIES
+router.delete('/dev/flush-corrupted', async (req, res) => {
+  try {
+    const userId = req.user.id; // From your auth middleware
+
+    const { data, error } = await supabase
+      .from('tasks')
+      .delete()
+      .eq('user_id', userId)
+      .not('status', 'in', '("Pending","Completed")'); // Targets old lowercase or bad data
+
+    if (error) throw error;
+
+    res.status(200).json({ 
+      message: "Success! Corrupted validation states flushed successfully.",
+      clearedRows: data 
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

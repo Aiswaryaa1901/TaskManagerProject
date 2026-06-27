@@ -2,55 +2,68 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
+import Tasks from './components/Tasks';
+import "./components/Dashboard.css"; 
 import './index.css';
+import Projects from './components/Projects';
 
-// 🏢 UNIFIED INTERFACE LAYOUT (Your existing layout structure wrapped for protected views)
+// 🏢 UNIFIED INTERFACE LAYOUT
 function AppLayout() {
   const location = useLocation();
 
   const handleLogout = () => {
     localStorage.clear();
-    window.location.href = '/login'; // Clear token and force redirect to login
+    window.location.href = '/login'; 
   };
 
   return (
-    <div className="app-layout">
-      {/* Your Sidebar - Kept exactly as you designed it, updated with React Router Links */}
-      <aside className="sidebar">
-        <div className="logo">PMMS Panel</div>
-        <nav className="nav-menu">
-          <Link to="/dashboard" className={location.pathname === '/dashboard' ? 'active' : ''}>📊 Dashboard</Link>
-          <Link to="/projects" className={location.pathname === '/projects' ? 'active' : ''}>📁 Projects</Link>
-          <Link to="/tasks" className={location.pathname === '/tasks' ? 'active' : ''}>📝 Tasks</Link>
-          <button onClick={handleLogout} className="logout-btn">🚪 Session Exit</button>
+    <div className="dashboard-layout-container">
+      {/* Single Clean Sidebar Panel */}
+      <aside className="pmms-sidebar-panel">
+        <div className="sidebar-brand">
+          <span className="brand-dot"></span> TASK MANAGER
+        </div>
+        
+        <nav className="sidebar-menu">
+          <Link to="/dashboard" className={`menu-link ${location.pathname === '/dashboard' ? 'active' : ''}`}>
+            <span className="menu-icon">📊</span> Dashboard
+          </Link>
+          
+          <Link to="/projects" className={`menu-link ${location.pathname === '/projects' ? 'active' : ''}`}>
+            <span className="menu-icon">📁</span> Projects
+          </Link>
+          
+          <Link to="/tasks" className={`menu-link ${location.pathname === '/tasks' ? 'active' : ''}`}>
+            <span className="menu-icon">📝</span> Tasks
+          </Link>
         </nav>
+
+        <button onClick={handleLogout} className="menu-link logout-btn">
+          <span className="menu-icon">🚪</span> Session Exit
+        </button>
       </aside>
 
-      {/* Main content dynamically switches between your internal dashboard modules */}
-      <main className="main-content">
+      {/* Main View Area Viewport */}
+      <main className="dashboard-wrapper">
         <Routes>
           <Route path="/dashboard" element={<Dashboard />} />
-          {/* Fallback routing for internal modules */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="*" element={<div className="glass-card">Coming Soon...</div>} />
+          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/projects" element={<Projects />} />
         </Routes>
       </main>
     </div>
   );
 }
 
-// 🌐 GLOBAL ROUTER GUARDENGINE
+// 🌐 GLOBAL ROUTER GUARD ENGINE
 function App() {
-  // Checks if a token exists dynamically on every single route change
   const isAuthenticated = () => !!localStorage.getItem('token');
 
   return (
     <Router>
       <Routes>
-        {/* Public Gateway Entrypoint */}
         <Route path="/login" element={<Login />} />
-        
-        {/* Protected Routing Guard - Sends non-logged in users automatically to /login */}
         <Route 
           path="/*" 
           element={isAuthenticated() ? <AppLayout /> : <Navigate to="/login" replace />} 

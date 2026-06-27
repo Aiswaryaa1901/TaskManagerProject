@@ -1,223 +1,678 @@
-/* Dashboard Context Layout */
-.dashboard-wrapper {
-  padding: 40px;
-  background-color: #f8fafc;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ==========================================================================
+   1. GLOBAL SYSTEM SHELL LAYOUT
+   ========================================================================== */
+.dashboard-layout-container {
+  display: flex;
   min-height: 100vh;
-  color: #0f172a;
+  background-color: #0b0b0c;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
 }
 
-/* Header Navbar Configuration */
+/* ==========================================================================
+   2. PMMS PREMIUM SIDEBAR PANEL
+   ========================================================================== */
+.pmms-sidebar-panel {
+  width: 260px;
+  background-color: #111112;
+  border-right: 1px solid #1c1c1e;
+  padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.sidebar-brand {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #e5e5ea;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 12px;
+  margin-bottom: 48px;
+}
+
+.brand-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #bfff00;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #bfff00;
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+/* Sidebar Navigation Option Links */
+.menu-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #8e8e93;
+  padding: 14px 18px;
+  border-radius: 16px; 
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-decoration: none; /* For React Router Link elements */
+  box-sizing: border-box;
+}
+
+.menu-link:hover {
+  color: #ffffff;
+  background-color: #18181a;
+  border-color: #222225;
+}
+
+/* Active Navigation Highlights (Neon Lime Fill) */
+.menu-link.active {
+  color: #000000 !important;
+  background-color: #bfff00 !important;
+  font-weight: 600;
+}
+
+.menu-link.active .menu-icon {
+  filter: brightness(0);
+}
+
+.menu-icon {
+  font-size: 16px;
+}
+
+/* Logout Action Variation Button */
+.logout-btn {
+  margin-top: auto;
+  border-color: transparent;
+}
+
+.logout-btn:hover {
+  background-color: rgba(255, 69, 58, 0.1);
+  border-color: rgba(255, 69, 58, 0.2);
+  color: #ff453a;
+}
+
+/* ==========================================================================
+   3. MAIN WORKSPACE CONTENT CONTAINERS
+   ========================================================================== */
+.dashboard-wrapper, .dashboard-content-wrapper {
+  flex: 1;
+  padding: 40px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
 .dashboard-top-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 36px;
-  border-bottom: 1px solid #e2e8f0;
-  padding-bottom: 20px;
+  margin-bottom: 32px;
+  gap: 20px;
 }
 
 .welcome-meta h1 {
-  font-size: 2rem;
+  font-size: 28px;
   font-weight: 700;
-  letter-spacing: -0.5px;
-  color: #0f172a;
+  margin: 0 0 4px 0;
 }
 
 .welcome-meta p {
-  color: #64748b;
-  margin-top: 4px;
-  font-size: 0.95rem;
+  color: #8e8e93;
+  margin: 0;
+  font-size: 14px;
 }
 
 .system-status-pill {
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: #f0fdf4;
-  color: #16a34a;
+  background-color: #141416;
+  border: 1px solid #222225;
   padding: 8px 16px;
-  border-radius: 9999px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  border: 1px solid #bbf7d0;
+  border-radius: 100px;
+  font-size: 13px;
+  color: #e5e5ea;
+  flex-shrink: 0;
 }
 
-/* Status Pulse Animation */
 .pulse-dot {
   width: 8px;
   height: 8px;
-  background-color: #16a34a;
+  background-color: #bfff00;
   border-radius: 50%;
-  display: inline-block;
-  animation: pulse-ring 1.5s infinite;
 }
 
-@keyframes pulse-ring {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7); }
-  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(22, 163, 74, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+.dashboard-content-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-/* Premium Card Architecture */
-.glass-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.glass-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
-}
-
-/* Metrics Grid Alignment */
+/* ==========================================================================
+   4. THEME METRIC CARDS & INSIGHTS GRID
+   ========================================================================== */
 .metrics-matrix {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 24px;
-  margin-bottom: 32px;
+}
+
+.theme-card {
+  background: linear-gradient(145deg, #18181a 0%, #111112 100%);
+  border-radius: 24px;
+  border: 1px solid #222225;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.03), 0 8px 24px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
 }
 
 .stat-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #64748b;
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: #8e8e93;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.icon-wrapper {
-  padding: 8px;
-  border-radius: 10px;
-  font-size: 1.2rem;
-}
-.blue-bg { background-color: #eff6ff; }
-.purple-bg { background-color: #faf5ff; }
-.green-bg { background-color: #f0fdf4; }
-.amber-bg { background-color: #fffbeb; }
-
-.stat-box h2 {
-  font-size: 2.5rem;
+.theme-card h2 {
+  font-size: 36px;
   font-weight: 700;
-  margin: 16px 0 8px 0;
-  color: #1e293b;
+  margin: 16px 0 0 0;
+  letter-spacing: -1px;
 }
 
-.stat-footer {
-  font-size: 0.85rem;
-  color: #94a3b8;
-}
+.text-lime { color: #bfff00; }
+.text-amber { color: #ff9500; }
 
-.text-success { color: #16a34a; }
-.text-warning { color: #d97706; }
-
-/* Insights Layer Row */
 .insights-row {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 24px;
 }
 
-@media (max-width: 900px) {
-  .insights-row { grid-template-columns: 1fr; }
-}
-
-.insight-panel h3 {
-  font-size: 1.1rem;
+.large-panel h3, .warning-banner-card h3 {
+  font-size: 16px;
   font-weight: 600;
-  color: #1e293b;
-  margin-bottom: 20px;
+  margin: 0 0 16px 0;
 }
 
-/* Progress Insight Box elements */
+/* Progress Insight Mechanics */
 .progress-container-box {
   display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 16px;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .progress-percentage-label {
-  font-size: 1.75rem;
+  font-size: 24px;
   font-weight: 700;
-  color: #2563eb;
+  color: #bfff00;
 }
 
 .progress-track-bar {
-  flex: 1;
+  background-color: #1c1c1e;
   height: 12px;
-  background-color: #e2e8f0;
-  border-radius: 9999px;
+  border-radius: 100px;
   overflow: hidden;
 }
 
 .progress-fill-bar {
+  background-color: #bfff00;
+  box-shadow: 0 0 12px rgba(191, 255, 0, 0.4);
   height: 100%;
-  background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
-  border-radius: 9999px;
-  transition: width 0.5s ease-in-out;
+  border-radius: 100px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.insight-desc {
-  font-size: 0.9rem;
-  color: #64748b;
-  line-height: 1.5;
-}
-
-/* Predictive System Alerts Panel */
 .warning-banner-card {
-  background-color: #fff7ed;
-  border: 1px solid #ffedd5;
+  border-color: rgba(255, 69, 58, 0.2);
 }
 
 .warning-banner-card h3 {
-  color: #c2410c;
+  color: #ff453a;
 }
 
 .alert-content p {
-  font-size: 0.95rem;
-  color: #7c2d12;
-  line-height: 1.6;
+  margin: 0;
+  font-size: 14px;
+  color: #e5e5ea;
+  line-height: 1.5;
 }
 
-.recommedation-tag {
-  display: inline-block;
-  margin-top: 14px;
-  font-size: 0.8rem;
+/* ==========================================================================
+   5. TASK MANAGER WORKSPACE COMPONENTS
+   ========================================================================== */
+.workspace-selector-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.workspace-selector-container label {
+  font-size: 14px;
+  color: #8e8e93;
+}
+
+.theme-select {
+  background-color: #141416;
+  color: #ffffff;
+  border: 1px solid #222225;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Tab Filtering Headers */
+.task-filter-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.filter-tab {
+  background: #141416;
+  border: 1px solid #222225;
+  color: #8e8e93;
+  padding: 10px 20px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-tab:hover {
+  color: #ffffff;
+  background-color: #18181a;
+}
+
+.filter-tab.active {
+  background-color: #bfff00;
+  border-color: #bfff00;
+  color: #000000;
   font-weight: 600;
-  background-color: #ffedd5;
-  color: #9a3412;
-  padding: 6px 12px;
-  border-radius: 6px;
 }
 
-/* Fullscreen Loader Animation */
-.loading-screen {
+/* Task Row Alignment */
+.task-ledger-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.task-row-item {
+  flex-direction: row !important;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+}
+
+.task-main-details {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.status-indicator-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-indicator-dot.pending {
+  background-color: #ff9500;
+  box-shadow: 0 0 8px #ff9500;
+}
+
+.status-indicator-dot.completed {
+  background-color: #bfff00;
+  box-shadow: 0 0 8px #bfff00;
+}
+
+.task-item-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #e5e5ea;
+  transition: all 0.2s ease;
+}
+
+.task-done .task-item-title {
+  text-decoration: line-through;
+  color: #636366;
+}
+
+/* Task Inline Action State Controls */
+.task-action-toggle-btn {
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid;
+  transition: all 0.2s ease;
+}
+
+.task-action-toggle-btn.pending {
+  background: transparent;
+  border-color: #3a3a3c;
+  color: #ffffff;
+}
+
+.task-action-toggle-btn.pending:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: #48484a;
+}
+
+.task-action-toggle-btn.done {
+  background-color: rgba(191, 255, 0, 0.1);
+  border-color: rgba(191, 255, 0, 0.2);
+  color: #bfff00;
+}
+
+/* Task Quick-Add Entry Panel Forms */
+.quick-add-task-panel {
+  justify-content: flex-start;
+  height: fit-content;
+}
+
+.quick-add-task-panel h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 20px 0;
+}
+
+.quick-task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group-block label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #8e8e93;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-group-block input, .form-group-block select {
+  background-color: #141416;
+  color: #ffffff;
+  border: 1px solid #222225;
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 14px;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.form-group-block input:focus, .form-group-block select:focus {
+  border-color: #48484a;
+}
+
+.cyber-pill-btn {
+  background-color: #bfff00;
+  color: #000000;
+  border: none;
+  padding: 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(191, 255, 0, 0.2);
+}
+
+.cyber-pill-btn:hover {
+  background-color: #d4ff33;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(191, 255, 0, 0.3);
+}
+
+.empty-state {
+  padding: 40px;
+  text-align: center;
+  color: #8e8e93;
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   6. STATE OVERLAYS (LOADING spinners / ERROR MESSAGES)
+   ========================================================================== */
+.loading-screen, .error-panel {
+  background-color: #0b0b0c;
+  color: #ffffff;
+  min-height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 60vh;
   gap: 16px;
-  color: #64748b;
 }
 
 .spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #e2e8f0;
-  border-top: 4px solid #2563eb;
+  width: 32px;
+  height: 32px;
+  border: 3px solid #1c1c1e;
+  border-top-color: #bfff00;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: turn 0.8s linear infinite;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+@keyframes turn {
+  to { transform: rotate(360deg); }
 }
+
+/* ==========================================================================
+   7. RESPONSIFY MEDIA BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .insights-row {
+    grid-template-columns: 1fr;
+  }
+  .pmms-sidebar-panel {
+    width: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-layout-container {
+    flex-direction: column;
+  }
+  .pmms-sidebar-panel {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #1c1c1e;
+    padding: 20px;
+  }
+  .sidebar-brand {
+    margin-bottom: 24px;
+  }
+  .dashboard-top-nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/*new */
+
+/* ==========================================================================
+   8. PROJECTS PAGE INTERFACE MATRIX & ANTI-OVERLAP BOXES
+   ========================================================================== */
+.projects-workspace-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Matches the tasks view profile */
+  gap: 28px;
+  align-items: start;
+}
+
+/* Fluid auto-fitting grid layout that wraps beautifully */
+.projects-grid-matrix {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+/* Individual Card Structural Boundaries */
+.project-matrix-card {
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px;
+  height: 100%; /* Forces cards to take even row sizing blocks */
+}
+
+.project-card-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.project-status-cluster {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cluster-indicator-node {
+  width: 6px;
+  height: 6px;
+  background-color: #bfff00;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #bfff00;
+}
+
+.cluster-meta-tag {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #8e8e93;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.project-card-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.3;
+}
+
+.project-card-desc {
+  margin: 0;
+  font-size: 13px;
+  color: #8e8e93;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Truncates clean after 3 text lines max */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.project-card-footer {
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid #1c1c1e;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.project-id-badge {
+  font-size: 11px;
+  font-family: monospace;
+  color: #636366;
+  background-color: #141416;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+/* Form Panel Specific Adjustments */
+.project-creator-sidebar {
+  position: sticky;
+  top: 40px;
+}
+
+.theme-textarea {
+  background-color: #141416;
+  color: #ffffff;
+  border: 1px solid #222225;
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 14px;
+  outline: none;
+  font-family: inherit;
+  resize: none;
+  transition: border-color 0.2s;
+  line-height: 1.5;
+}
+
+.theme-textarea:focus {
+  border-color: #48484a;
+}
+
+/* Responsify Project Configurations Layouts */
+@media (max-width: 1200px) {
+  .projects-workspace-layout {
+    grid-template-columns: 1fr; /* Snaps Creator Console down under cards stack gracefully */
+  }
+  .project-creator-sidebar {
+    position: static;
+  }
+}
+
+/* Project Delete Button Alignment Control */
+.project-delete-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.project-delete-btn:hover {
+  background-color: rgba(255, 69, 58, 0.1);
+  border-color: rgba(255, 69, 58, 0.2);
+  transform: scale(1.05);
+}
+
