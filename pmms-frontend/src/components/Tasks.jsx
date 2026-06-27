@@ -34,7 +34,7 @@ function Tasks() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/projects', { 
+        const response = await fetch('https://task-manager-app-fggc.onrender.com/api/projects', { 
           method: 'GET', 
           headers: getAuthHeaders()
         });
@@ -62,7 +62,7 @@ function Tasks() {
 
     const fetchTasksForProject = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/projects/${selectedProjectId}/tasks`, {
+        const response = await fetch(`https://task-manager-app-fggc.onrender.com/api/projects/${selectedProjectId}/tasks`, {
           method: 'GET',
           headers: getAuthHeaders()
         });
@@ -84,7 +84,7 @@ function Tasks() {
     if (!newTaskName.trim() || !formProjectId) return;
 
     try {
-      const response = await fetch('http://localhost:5000/api/tasks', {
+      const response = await fetch('https://task-manager-app-fggc.onrender.com/api/tasks', {
         method: 'POST',
         headers: getAuthHeaders(),
         body: JSON.stringify({
@@ -116,7 +116,7 @@ function Tasks() {
     const updatedStatus = task.status === 'Completed' ? 'Pending' : 'Completed';
     
     try {
-      const response = await fetch(`http://localhost:5000/api/tasks/${task.id}`, {
+      const response = await fetch(`https://task-manager-app-fggc.onrender.com/api/tasks/${task.id}`, {
         method: 'PUT',
         headers: getAuthHeaders(),
         body: JSON.stringify({ status: updatedStatus })
@@ -138,7 +138,7 @@ function Tasks() {
     if (!window.confirm("Are you sure you want to permanently clear this task row?")) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/tasks/${taskId}`, {
+      const response = await fetch(`https://task-manager-app-fggc.onrender.com/api/tasks/${taskId}`, {
         method: 'DELETE',
         headers: getAuthHeaders()
       });
