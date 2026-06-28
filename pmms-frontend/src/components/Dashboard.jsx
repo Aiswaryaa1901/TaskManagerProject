@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config';
 import './Dashboard.css';
 
 function Dashboard() {
@@ -15,7 +16,7 @@ function Dashboard() {
     const fetchDashboardStats = async () => {
       try {
         const token = localStorage.getItem('token'); 
-        const response = await fetch('https://task-manager-app-fggc.onrender.com/api/projects/analytics/dashboard', {
+const response = await fetch(`${API_BASE_URL}/api/projects/analytics/dashboard`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

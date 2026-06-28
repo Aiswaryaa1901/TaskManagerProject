@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config';
 import './Dashboard.css';
 
 function Projects() {
@@ -16,7 +17,7 @@ function Projects() {
 
   const fetchProjects = async () => {
     try {
-      const response = await fetch('https://task-manager-app-fggc.onrender.com/api/projects', { method: 'GET', headers });
+      const response = await fetch(`${API_BASE_URL}/api/projects`, { method: 'GET', headers });
       
       if (response.status === 401 || response.status === 403) {
         localStorage.clear();
@@ -43,7 +44,7 @@ function Projects() {
     if (!newProjectName.trim()) return;
 
     try {
-      const response = await fetch('https://task-manager-app-fggc.onrender.com/api/projects', {
+      const response = await fetch(`${API_BASE_URL}/api/projects`, {
         method: 'POST',
         headers,
         body: JSON.stringify({
@@ -67,7 +68,7 @@ function Projects() {
     if (!window.confirm("Are you sure you want to completely wipe this project cluster? All attached tasks might be lost!")) return;
 
     try {
-      const response = await fetch(`https://task-manager-app-fggc.onrender.com/api/projects/${projectId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/projects/${projectId}`, {
         method: 'DELETE',
         headers
       });

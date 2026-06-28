@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 import './Login.css';
 
 function Login() {
@@ -17,8 +18,8 @@ function Login() {
     setLoading(true);
 
     const endpoint = isRegistering 
-      ? 'https://task-manager-app-fggc.onrender.com/api/auth/signup' 
-      : 'https://task-manager-app-fggc.onrender.com/api/auth/login';
+      ? `${API_BASE_URL}/api/auth/signup` 
+      : `${API_BASE_URL}/api/auth/login`;
 
     try {
       const response = await fetch(endpoint, {
@@ -52,7 +53,7 @@ function Login() {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = 'https://task-manager-app-fggc.onrender.com/api/auth/google';
+    window.location.href = `${API_BASE_URL}/api/auth/google`;
   };
 
   return (
