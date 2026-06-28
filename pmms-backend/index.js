@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 // Global Middleware Configuration (Keep this ABOVE your route definitions!)
 // 🚨 FIXED: Explicitly configured CORS to guarantee 'Authorization' headers are permitted
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:3000'], // Allow standard Vite/React dev ports
+  origin: ['http://localhost:5173', 'http://localhost:3000', 'https://task-manager-project-livid.vercel.app'], // Allow standard Vite/React dev ports
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
