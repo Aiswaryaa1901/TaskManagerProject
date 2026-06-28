@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const { supabase, supabaseAdmin } = require('../config/supabase');
 
+// Dynamically determine redirect URL based on whether we are in production or local development
+const FRONTEND_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://task-manager-project-livid.vercel.app' 
+  : 'http://localhost:5173';
+
 // 1. SIGN UP ROUTE (Complete Cloud Restriction Bypass)
 router.post('/signup', async (req, res) => {
   const { email, password } = req.body;
@@ -111,11 +116,11 @@ router.get('/google', async (req, res) => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'http://localhost:5173/dashboard',
+        redirectTo: `${FRONTEND_URL}/dashboard`, // ✅ Now dynamically uses live Vercel or localhost
       },
     });
 
-    if (error) throw error;
+  if (error) throw error;
     res.redirect(data.url);
   } catch (err) {
     res.status(500).json({ error: err.message || 'Failed to initialize Google OAuth sequence.' });
